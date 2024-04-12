@@ -18,7 +18,7 @@ public class GunCard : MonoBehaviour
 
     private void ShotFind()
     {
-        if (color._renderer.material.color == Color.white)
+        if (color._renderer.material.color == color.colorMaterial)
         {
             RaycastHit hit;
             if (Physics.Raycast(transform.position + Vector3.up, transform.TransformDirection(Vector3.forward), out hit))

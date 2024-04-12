@@ -10,7 +10,7 @@ public class Miner : MonoBehaviour
 
     private void Update()
     {
-        if (color._renderer.material.color == Color.white)
+        if (color._renderer.material.color == color.colorMaterial)
         {
             timer += Time.deltaTime;
             if (timer >= interval)

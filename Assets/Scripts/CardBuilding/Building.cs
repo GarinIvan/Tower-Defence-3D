@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
@@ -7,9 +8,15 @@ public class Building : MonoBehaviour
 {
     [SerializeField] private Vector2 _buildingSize;
     public Renderer _renderer;
+    public Color colorMaterial;
     public float health;
 
     public Vector2 BuildingSize { get => _buildingSize; set {; } }
+
+    private void Start()
+    {
+        colorMaterial = _renderer.material.color;
+    }
 
     public void SetColor(bool isAvailableToBuild)
     {
@@ -28,6 +35,6 @@ public class Building : MonoBehaviour
     }
     public void ResetColor()
     {
-        _renderer.material.color = Color.white;
+        _renderer.material.color = colorMaterial;
     }
 }

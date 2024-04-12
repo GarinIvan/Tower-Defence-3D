@@ -12,7 +12,7 @@ public class EnemyController : MonoBehaviour
     {
         RotateEnemy();
     }
-    void Update()
+    void FixedUpdate()
     {
         EnemyMove();
     }
@@ -30,7 +30,7 @@ public class EnemyController : MonoBehaviour
     }
     private IEnumerator AttackBuilding()
     {
-        if (_targetBuilding.health > 0 && _targetBuilding._renderer.material.color == Color.white)
+        if (_targetBuilding.health > 0 && _targetBuilding._renderer.material.color == _targetBuilding.colorMaterial)
         {
             speed = 0;
             yield return new WaitForSeconds(1);
