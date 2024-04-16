@@ -21,10 +21,28 @@ public class Building : MonoBehaviour
     public void SetColor(bool isAvailableToBuild)
     {
         if (isAvailableToBuild)
-            _renderer.material.color = Color.green;
+        {
+            ChangeColorRecursive(transform, Color.green);
+        }
         else
-            _renderer.material.color = Color.red;
+        {
+            ChangeColorRecursive(transform, Color.red);
+        }
     }
+
+    private void ChangeColorRecursive(Transform parent, Color color)
+    {
+        foreach (Transform child in parent)
+        {
+            Renderer childRenderer = child.GetComponent<Renderer>();
+            if (childRenderer != null)
+            {
+                childRenderer.material.color = color;
+            }
+            ChangeColorRecursive(child, color);
+        }
+    }
+
     public void TakeDamage(float damage)
     {
         health -= damage;
@@ -33,8 +51,23 @@ public class Building : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     public void ResetColor()
     {
         _renderer.material.color = colorMaterial;
+        ResetColorRecursive(transform);
+    }
+
+    private void ResetColorRecursive(Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            Renderer childRenderer = child.GetComponent<Renderer>();
+            if (childRenderer != null)
+            {
+                childRenderer.material.color = colorMaterial;
+            }
+            ResetColorRecursive(child);
+        }
     }
 }

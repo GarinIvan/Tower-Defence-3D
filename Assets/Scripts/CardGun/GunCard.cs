@@ -9,34 +9,47 @@ public class GunCard : MonoBehaviour
     private float timer = 0f;
     public Building color;
     public Bullet bulletPrefab;
-    public Transform bulletSpawnPosition;
-
+    public Transform[] bulletSpawnPosition;
     private void Update()
     {
         ShotFind();
     }
-
     private void ShotFind()
     {
         if (color._renderer.material.color == color.colorMaterial)
         {
+            bool canShoot = false;
             RaycastHit hit;
-            if (Physics.Raycast(transform.position + Vector3.up, transform.TransformDirection(Vector3.forward), out hit))
+
+            for (int i = 0; i < bulletSpawnPosition.Length; i++)
+            {
+                if (Physics.Raycast(bulletSpawnPosition[i].position + Vector3.up,
+                        bulletSpawnPosition[i].TransformDirection(Vector3.forward), out hit))
+                {
+                    if (hit.collider.gameObject.CompareTag("Enemy"))
+                    {
+                        canShoot = true;
+                        break; // Если нашли хотя бы одно попадание во врага, выходим из цикла
+                    }
+                }
+            }
+
+            if (canShoot)
             {
                 timer += Time.deltaTime;
-                if (hit.collider.gameObject.CompareTag("Enemy"))
+                if (timer >= interval)
                 {
-                    if (timer >= interval)
-                    {
-                        timer = 0f;
-                        Shot();
-                    }
+                    timer = 0f;
+                    Shot();
                 }
             }
         }
     }
     private void Shot()
     {
-        Instantiate(bulletPrefab, bulletSpawnPosition.position, transform.rotation);
+        for (int i = 0; i < bulletSpawnPosition.Length; i++)
+        {
+            Instantiate(bulletPrefab, bulletSpawnPosition[i].position, bulletSpawnPosition[i].rotation);
+        }
     }
 }
